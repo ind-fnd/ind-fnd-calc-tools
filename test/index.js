@@ -1,7 +1,7 @@
 var CalcTool = require('../src/index.js')
 
 var data = [];
-for(var i = 0; i < 100; i++) {
+for(var i = 0; i < 10000; i++) {
   var d = {};
   d.DIST_COL_A = Math.random()*50 + 50;
   d.DIST_COL_B = Math.random()*50 + 50;
