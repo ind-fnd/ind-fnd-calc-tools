@@ -18,17 +18,28 @@ for(var i = 0; i < 100; i++) {
 var rules = [
   {
     rltKey: "r3", 
-    rule: 'DIST_COL_F/DIST_COL_C*100-DIST_COL_D/DIST_COL_C*100', 
+    rule: 'DIST_COL_F*100.00/DIST_COL_C-DIST_COL_D*100.00/DIST_COL_C', 
     precision: 2 
   },
   {
     rltKey: "r4", 
-    rule: 'DIST_COL_H*100/DIST_COL_C'
+    precision: 2,
+    rule: 'DIST_COL_H+DIST_COL_I'
+  },
+  {
+    rltKey: "r5", 
+    precision: 2,
+    rule: '(DIST_COL_H+DIST_COL_I)*100.00'
+  },
+  {
+    rltKey: "r6", 
+    precision: 2,
+    rule: '(DIST_COL_H+DIST_COL_I)*100.00/0'
   }
 ]
 
-console.log(data)
+// console.log(data)
 console.time('calc')
-CalcTool.calcDatas(data,{calcRules: rules});
+CalcTool.calcDatas(data,{calcRules: rules, errRtn: '-'});
 console.log(data)
 console.timeEnd('calc')
