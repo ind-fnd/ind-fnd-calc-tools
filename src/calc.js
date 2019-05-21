@@ -2,9 +2,9 @@
  * S' -> S
  * S -> E+S|E-S|E
  * E -> t*E|t/E|t
- * t = INTEGER|DOUBLE|COLMN
+ * t = INTEGER|DOUBLE|COLMN|(S)
 */
-// 根据输入的一条输入，输出解析后的词法单位
+// 根据输入，输出解析后的词法单位
 var parse = function(i) {
   let lexialTokens = []
 

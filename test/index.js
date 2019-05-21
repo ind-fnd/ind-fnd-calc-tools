@@ -23,8 +23,7 @@ var rules = [
   },
   {
     rltKey: "r4", 
-    rule: 'DIST_COL_H*100/DIST_COL_C', 
-    precision: 2 
+    rule: 'DIST_COL_H*100/DIST_COL_C'
   }
 ]
 

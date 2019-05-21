@@ -23,10 +23,12 @@ exports.calcDatas = function(datas, options){
         d[k] = CalcUtil.doCalc(astHash[k], d);
         if (isNaN(d[k])) {
           d[k] = '-';
-          return 
+          return;
         }
         if (precisionHash[k]) {
-          d[k] = !!d[k] ? d[k].toFixed(precisionHash[k]) : d[k]
+          d[k] = !!d[k] ? d[k].toFixed(precisionHash[k]) : d[k];
+        } else {
+          d[k] = parseInt(d[k]);
         }
       })
     })
