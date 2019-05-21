@@ -17,11 +17,42 @@ var parse = function(i) {
   // 变量正则
   let varReg = /[a-zA-z_]/;
 
+  // 分别用于记录遍历的括号开始位置与结束位置数组
+  let posiMap = {};
+  let startPosis = [];
+  let endPosis = [];
+  for (let j = 0; j < i.length; j++) {
+    if (i[j] == '(') {
+      startPosis.push(j);
+    } else if (i[j] == ')') {
+      endPosis.push(j);
+    }
+  }
+  if (startPosis.length != endPosis.length) {
+    throw "非法的输入，括号对不匹配，请校验输入的合法性！";
+  } else {
+    let len = startPosis.length;
+    startPosis.forEach((n, idx) => {
+      posiMap[n] = endPosis[len - 1 - idx];
+    })
+  }
+
   var getToken = function(inp) {
     if (i[posi] == ' ') {
       posi += 1;
       return;
     }
+
+    // 匹配到(S)词法开始，需要查找对应结束的符号)
+    if ("(" == i[posi]) {
+      let endPos = posiMap[posi]
+      lexialTokens.push({
+        val: parse(i.substring(posi + 1, endPos)),
+        type: 'SUB_TOKEN'
+      })
+      posi = endPos + 1;
+    }
+
     // 这是个操作符
     if (optReg.test(inp[0])) {
       lexialTokens.push({
@@ -75,7 +106,13 @@ var parse = function(i) {
 var analysis = function(tokens) {
   let astAnalysis = {};
   if (tokens.length == 1) {
-    astAnalysis.val = tokens[0];
+    if (tokens[0].type == 'SUB_TOKEN') {
+      let tmpAnaRlt = analysis(tokens[0].val)
+      tmpAnaRlt.subToken = true;
+      astAnalysis = tmpAnaRlt;
+    } else {
+      astAnalysis.val = tokens[0];
+    }
     return astAnalysis;
   }
 
@@ -109,7 +146,7 @@ var analysis = function(tokens) {
   }
   return astAnalysis;
 }
-// console.log(analysis(parse('DIST_COL_H*100/DIST_COL_C')))
+// console.log(analysis(parse('(DIST_COL_I + DIST_COL_H)*100/DIST_COL_C')))
 
 // 将分析树转换成抽象语法树
 // let transAnalysis = (astAnalysis) => {
@@ -135,7 +172,11 @@ var traverTree = function(t) {
   } else {
     val = 'rowData.' + t.val.val;
   }
-  return traverTree(t.left) + val + traverTree(t.right);
+  if (t.subToken) {
+    return `(${traverTree(t.left) + val + traverTree(t.right)})`
+  } else {
+    return traverTree(t.left) + val + traverTree(t.right);
+  }
 }
 
 // 中序遍历一个语法树
@@ -149,16 +190,23 @@ var traverTreeCalc = function(t, dataContext) {
   } else if (t.val.type == 'OPT') {
     var rltTmp;
     switch(t.val.val){
-      case '+': rltTmp = traverTreeCalc(t.left, dataContext) + traverTreeCalc(t.right, dataContext);
-      case '-': rltTmp = traverTreeCalc(t.left, dataContext) - traverTreeCalc(t.right, dataContext);
-      case '*': rltTmp = traverTreeCalc(t.left, dataContext) * traverTreeCalc(t.right, dataContext);
+      case '+': 
+        rltTmp = traverTreeCalc(t.left, dataContext) + traverTreeCalc(t.right, dataContext);
+        break;
+      case '-': 
+        rltTmp = traverTreeCalc(t.left, dataContext) - traverTreeCalc(t.right, dataContext);
+        break;
+      case '*': 
+        rltTmp = traverTreeCalc(t.left, dataContext) * traverTreeCalc(t.right, dataContext);
+        break;
       case '/': {
         var vTmp = traverTreeCalc(t.right, dataContext)
         if (vTmp == 0) {
-          rltTmp = '-99999999';
+          throw 'dividzero'
         } else {
           rltTmp = traverTreeCalc(t.left, dataContext) / vTmp;
         }
+        break;
       }
     }
     return rltTmp;
@@ -167,7 +215,7 @@ var traverTreeCalc = function(t, dataContext) {
   }
 }
 
-// console.log(render(analysis(parse('AA+BB-CC*DD/100'))))
+// console.log(render(analysis(parse('(DIST_COL_I + DIST_COL_H)*100/DIST_COL_C'))))
 
 // 生成抽象语法树
 exports.genAst = function(input){
@@ -181,6 +229,13 @@ exports.genCode = function(ast) {
 }
 
 // 完成计算
-exports.doCalc = function(ast, data) {
-  return traverTreeCalc(ast, data);
+exports.doCalc = function(ast, data, errRtn) {
+  try {
+    let rlt = traverTreeCalc(ast, data, errRtn);
+    return rlt;
+  } catch (err) {
+    if (err == 'dividzero') {
+      return errRtn
+    }
+  }
 }
