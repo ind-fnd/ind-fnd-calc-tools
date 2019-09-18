@@ -49,6 +49,12 @@ var rules = [
     precision: 2,
     errRtn: '-', 
     rule: '(K1+K2)/(K1+K2+K3)*100.00'
+  },
+  {
+    rltKey: "z2", 
+    precision: 2,
+    errRtn: '-', 
+    rule: 'K1-K2-K3'
   }
 ]
 

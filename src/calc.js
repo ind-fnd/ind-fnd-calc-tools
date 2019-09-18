@@ -129,14 +129,14 @@ var analysis = function(tokens) {
   }
 
   let idx = 0;
-  for( var i = 0; i < tokens.length; i++ ) {
+  for( var i = tokens.length - 1; i >= 0; i-- ) {
     if (tokens[i].val == '+' || tokens[i].val == '-') {
       idx = i;
       break;
     }
   }
   if (idx == 0) {
-    for( var i = 0; i < tokens.length; i++ ) {
+    for( var i = tokens.length - 1; i >= 0; i-- ) {
       if (tokens[i].val == '*' || tokens[i].val == '/') {
         idx = i;
         break;
