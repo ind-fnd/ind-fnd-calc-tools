@@ -20,30 +20,30 @@ for(var i = 0; i < 10000; i++) {
 }
 
 var rules = [
-  // {
-  //   rltKey: "r3", 
-  //   rule: 'DIST_COL_F*100.00/DIST_COL_C-DIST_COL_D*100.00/DIST_COL_C', 
-  //   errRtn: '-', 
-  //   precision: 2 
-  // },
-  // {
-  //   rltKey: "r4", 
-  //   precision: 2,
-  //   errRtn: '-', 
-  //   rule: 'DIST_COL_H+DIST_COL_I'
-  // },
-  // {
-  //   rltKey: "r5", 
-  //   precision: 2,
-  //   errRtn: '-', 
-  //   rule: '(DIST_COL_H+DIST_COL_I)*100.00'
-  // },
-  // {
-  //   rltKey: "r6", 
-  //   precision: 2,
-  //   errRtn: '-', 
-  //   rule: '(DIST_COL_H+DIST_COL_I)*100.00/0'
-  // },
+  {
+    rltKey: "r3", 
+    rule: 'DIST_COL_F*100.00/DIST_COL_C-DIST_COL_D*100.00/DIST_COL_C', 
+    errRtn: '-', 
+    precision: 2 
+  },
+  {
+    rltKey: "r4", 
+    precision: 2,
+    errRtn: '-', 
+    rule: 'DIST_COL_H+DIST_COL_I'
+  },
+  {
+    rltKey: "r5", 
+    precision: 2,
+    errRtn: '-', 
+    rule: '(DIST_COL_H+DIST_COL_I)*100.00'
+  },
+  {
+    rltKey: "r6", 
+    precision: 2,
+    errRtn: '-', 
+    rule: '(DIST_COL_H+DIST_COL_I)*100.00/0'
+  },
   {
     rltKey: "z1", 
     precision: 2,
