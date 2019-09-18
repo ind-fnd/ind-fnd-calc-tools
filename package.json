@@ -1,6 +1,7 @@
 {
   "name": "ind-fnd-calc-tools",
   "author": "ind-fnd-team",
+  "version": "1.0.0",
   "main": "src/index.js",
   "repository": "https://github.com/ind-fnd/ind-fnd-calc-tools.git",
   "scripts": {
