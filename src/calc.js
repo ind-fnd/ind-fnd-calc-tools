@@ -32,9 +32,21 @@ var parse = function(i) {
     throw "非法的输入，括号对不匹配，请校验输入的合法性！";
   } else {
     let len = startPosis.length;
-    startPosis.forEach((n, idx) => {
-      posiMap[n] = endPosis[len - 1 - idx];
-    })
+    // startPosis.forEach((n, idx) => {
+    //   posiMap[n] = endPosis[len - 1 - idx];
+    // })
+    for (let lastPosiIdx = len; lastPosiIdx >= 0; lastPosiIdx-- ) {
+      let startPosi = startPosis[lastPosiIdx];
+      for (let endPosiIdx = 0; endPosiIdx < endPosis.length; endPosiIdx++) {
+        let endPosi = endPosis[endPosiIdx];
+        // 找到与最右左括号匹配的右括号，维护对应关系，并从数组中删除此右括号的位置
+        if (endPosi > startPosi) {
+          posiMap[startPosi] = endPosi;
+          endPosis.splice(endPosiIdx, 1);
+          break;
+        }
+      }
+    }
   }
 
   var getToken = function(inp) {
@@ -80,7 +92,7 @@ var parse = function(i) {
         // nl是变量长度
         var nl = 1;
         // 下一个字符还匹配变量
-        while (inp.length > nl && varReg.test(inp[nl])) {
+        while (inp.length > nl && (varReg.test(inp[nl]) || numReg.test(inp[nl]))) {
           nl += 1;
         }
         lexialTokens.push({

@@ -3,6 +3,9 @@
   "author": "ind-fnd-team",
   "main": "src/index.js",
   "repository": "https://github.com/ind-fnd/ind-fnd-calc-tools.git",
+  "scripts": {
+    "test": "node test/index.js"
+  },
   "dependencies": {
   }
 }
